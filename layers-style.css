@@ -1,0 +1,362 @@
+:root {
+    --layer-opacity : 0.3;
+    --gridline-color : white;
+    --grid-color : black;
+    --background-color : #F5F5F5;
+    --tag-corner-size : 3px;
+    --tag-size : 5vh;
+    --tag-gap : 5px;
+    --tagline-height : 5px;
+    --grid-width : 50vh;
+    --grid-height : 50vh;
+    --grid-num : 10;
+    --tag-color1 : #B39DDB;
+    --tag-color2 : #CE93D8;
+    --tag-color3 : #81D4FA;
+    --tag-color4 : #81C784;
+    --tag-color5 : #FFECB3;
+    --tag-color6 : #90A4AE;
+    --tag-color7 : #FFCDD2;
+    --tag-color8 : #F48FB1;
+    --tag-color9 : #B2DFDB;
+    --tag-color10 : #D7CCC8;
+    --color1 : #0074D9;
+    --color2 : #FF4136;
+    --color3 : #2Ecc40;
+    --color4 : #FFDC00;
+    --color5 : #EF5350;
+    --color6 : #AAAAAA;
+    --color7 : #F012BE;
+    --color8 : #FF851B;
+    --color9 : #7FDBFF;
+    --color10 : #870c25;
+
+    --tilt-transform : perspective(1500px) rotateX(60deg);
+    --pixel-size : 30px;
+    --floor-gap : 20px;
+    
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color :var(--background-color);
+    overflow: hidden;
+}
+
+#center-float {
+    display : inline-grid;
+    grid-template-columns: 1fr 1fr;
+    position : absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    gap : 30px;
+}
+
+#layer-container {
+    position: relative;
+    display : inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width : var(--layer-width);
+    min-height : var(--layer-height);
+    width : 100%;
+}
+
+
+layer {
+    width: var(--grid-width);
+    height: calc(var(--grid-height) + var(--tag-size));
+    position : absolute;
+    display : inline-flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-width : var(--layer-width);
+    min-height : var(--layer-height);
+    opacity :1;
+    filter: drop-shadow(0px 1px 1px #3c40434d);
+    transition: all 0.3s ease-in-out;
+    pointer-events: none;
+    z-index: var(--floor);
+}
+
+layer.selected {
+    padding-left : calc(var(--grid-width) + 100px);
+}
+
+.shuffle-mode layer.selected {
+    padding-left : 30px;
+}
+
+.layer-content {
+    display : inline-flex;
+    flex-direction: column;
+    background-color: transparent;
+    width : var(--grid-width);
+    height : var(--grid-height);
+    min-width : var(--grid-width);
+    min-height : var(--grid-height);
+    padding : 10px;
+    pointer-events: auto;
+    border : 1px solid black;
+    background-image:
+      repeating-linear-gradient(#ccc 0 1px, transparent 1px 100%),
+      repeating-linear-gradient(90deg, #ccc 0 1px, transparent 1px 100%);
+      /*TODO : */
+    background-size: calc(( var(--grid-width) - 2px) / var(--grid-num)) calc(( var(--grid-height) - 2px) / var(--grid-num) );
+}
+
+tag {
+    align-self : flex-start;
+    pointer-events: auto;
+    font-size: 1.5em;
+}
+
+#gridline > tag {
+    pointer-events: none;
+}
+
+/* z-index 가 클 수록 앞에 있음 
+ z-index 가 낮은 거는 뒤로 가림 */
+#layer-container.shuffle-mode #gridline, 
+#layer-container.shuffle-mode layer {
+    transform : var(--tilt-transform) translateZ(calc(var(--floor) * var(--floor-gap)));
+}
+
+
+
+
+/* 파란색으로 긁어지는 거 방지 */
+#layer-container.shuffle-mode {-webkit-user-select: none;}
+
+#layer-container layer:hover {
+    transform : translateY(5px);
+}
+
+#layer-container layer.selected:hover {
+    transform : translateX(0px);
+}
+
+#layer-container.shuffle-mode layer:hover {
+    transform : var(--tilt-transform) translateZ(calc(var(--floor) * ( var(--floor-gap) ) + 10px )) translateY(5px);
+}
+
+
+#layer-container.shuffle-mode layer:hover {
+    transform : var(--tilt-transform) translateZ(calc(var(--floor) * ( var(--floor-gap) ) + 10px )) translateY(5px);
+}
+
+
+#gridline > .layer-content {
+    width : var(--grid-width);
+    height : var(--grid-height);
+    border : 1px solid black;
+    opacity : 1;
+    z-index : 0;
+    background-color: var(--gridline-color);
+    padding : 0;
+}
+
+
+tag {
+    display : inline-flex;
+    justify-content: center;
+    position: relative;
+    align-items: center;
+    min-width : var(--tag-size);
+    min-height : var(--tag-size);
+    background-color: var(--tag-color);
+    cursor: move;
+    border-radius: 0 0 var(--tag-corner-size) var(--tag-corner-size);
+}
+
+layer tag {margin-left:calc((var(--tag-size) - var(--tag-gap)) * (var(--layer) - 1));}
+
+#layer-1 tag, #layer-1 tagline  {background-color: var(--tag-color1)}
+#layer-2 tag, #layer-2 tagline  {background-color: var(--tag-color2)}
+#layer-3 tag, #layer-3 tagline  {background-color: var(--tag-color3)}
+#layer-4 tag, #layer-4 tagline  {background-color: var(--tag-color4)}
+#layer-5 tag, #layer-5 tagline  {background-color: var(--tag-color5)}
+#layer-6 tag, #layer-6 tagline  {background-color: var(--tag-color6)}
+#layer-7 tag, #layer-7 tagline  {background-color: var(--tag-color7)}
+#layer-8 tag, #layer-8 tagline  {background-color: var(--tag-color8)}
+#layer-9 tag, #layer-9 tagline  {background-color: var(--tag-color9)}
+#layer-10 tag, #layer-10 tagline  {background-color: var(--tag-color10)}
+
+tagline {
+    display : inline-block;
+    position: relative;
+    width : var(--grid-width);
+    height : var(--tagline-height);
+    min-height : var(--tagline-height);
+    min-width : var(--grid-width);
+    background-color: var(--tag-color);
+    border-radius: 0 0 var(--tag-corner-size) var(--tag-corner-size);
+}
+
+#layer-1 tagline {
+    border-radius: 0 0 var(--tag-corner-size) 0;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    min-width : 100%;
+    width : 100%;
+    min-height : 40px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#floating-island {
+    position: relative;
+    display : inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    min-height : 40px;
+    border-radius: 20px;
+    background-color: #757575;
+    padding : 10px;
+    gap : 10px;
+    margin-bottom : 5px;
+}
+
+#floating-island button {
+    min-width: 30px;
+    min-height: 30px;
+    border: none;
+    cursor: pointer;
+    border-radius: 15px;
+    padding : 10px;
+    font-size: 1.5em;
+    background-color : #e1e1e1;
+    transition: all .2s ease-in-out;
+}
+
+#floating-island button:hover {
+    background-color : #BDBDBD;
+}
+
+#floating-island button:active {
+    background-color : #A1A1A1;
+}
+
+#floating-island button.floor-control:enabled {
+    background-color: #ff914a;
+}
+
+#floating-island button:disabled {
+    background-color : #A1A1A1;
+}
+
+.hint {
+    font-size : 13px;
+    overflow-y: visible;
+    text-wrap : nowrap;
+    opacity : 1;
+    transition: all .5s ease-in-out;
+    color :#757575;
+}
+
+
+.hint.invisible {
+    opacity : 0;
+}
+
+#shuffle-hint {
+    position : absolute;
+    top : -1.5em;
+}
+
+#tag-hint {
+    position : absolute;
+    bottom : -2em;
+}
+
+
+#objects-container {
+    position: relative;
+    display : inline-flex;
+    flex-direction: column;
+    top: 50px;
+    left : -100px;
+    bottom: 50px;
+    min-width : 500px;
+    height: calc(100% - 100px);
+    background-color: #757575;
+    transform: translateX(70%);
+    padding : 20px 30px 50px 30px;
+    gap : 20px;
+    transition: all 0.3s ease-in-out;
+    border-radius: 50px 0 0 50px;
+}
+
+#objects-container.active {
+    transform: translateX(30%);
+}
+
+#container-handle {
+    position: relative;
+    left: 20px;
+    height: 50px;
+    display : inline-flex;
+    flex-direction: row;
+    align-items: center;
+    gap : 10px;
+    color : white;
+}
+
+.object {
+    display: grid;
+    gap : 2px;
+    transition: filter 0.3s ease-in-out;
+    filter:drop-shadow(0 0 3px)
+}
+
+.object.active {
+    filter: drop-shadow(0 0 10px lightsalmon);
+}
+
+.object[w="3"] {grid-template-columns: repeat(3, var(--pixel-size));}
+.object[h="2"] {grid-template-rows: repeat(2, var(--pixel-size));}
+
+.object.height-2 {
+    grid-template-rows: repeat(2, var(--pixel-size));
+}
+
+.block-pixel {
+    display : inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: var(--pixel-size);
+    height: var(--pixel-size);
+    cursor: pointer;
+    -webkit-user-select: none;
+}
+
+.red {background-color: red;}
+.green {background-color: green;}
+.blue {background-color: blue;}
+.yellow {background-color: yellow;}
+
+.x-1 {grid-column: 1;}
+.x-2 {grid-column: 2;}
+.x-3 {grid-column: 3;}
+.x-4 {grid-column: 4;}
+
+.y-1 {grid-row: 1;}
+.y-2 {grid-row: 2;}
+.y-3 {grid-row: 3;}
+.y-4 {grid-row: 4;}
+
